@@ -42,6 +42,15 @@
     ##########
     #
     # Make sure it's enabled and started
+    # chkconfig docker on
+    # service docker start
     #
     - name: check if docker is running
       service: name=docker enabled=yes state=started
+
+    ##########
+    #
+    # Other tools to install
+    #
+    - name: install your favorite tools
+      yum: name="lynx" state=present
