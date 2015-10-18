@@ -1,0 +1,31 @@
+---
+    ##########
+    #
+    # play to install epel, update yum packages and install docker on a centos box. Supports both centos6 and centos7
+    #
+-
+  hosts: all
+  gather_facts: yes
+  sudo: yes
+  tasks:
+    - debug: "msg='Distribution {{ ansible_distribution_version }} {{ ansible_distribution }}'"
+      name: " linux distibution"
+
+    - name: install the epel rpm from a remote repo for centos6
+      yum: name="{{ epel_rpm_centos6 }}" state=present
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+
+    - name: install the epel rpm from a remote repo for centos7
+      yum: name="{{ epel_rpm_centos7 }}" state=present
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+
+    - name: upgrade all packages
+      yum: name=* state=latest
+
+    - name: insall docker-io for centos6
+      yum: name="docker-io" state=present
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
+
+    - name: insall docker for centos7
+      yum: name="docker" state=present
+      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
