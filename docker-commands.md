@@ -123,15 +123,16 @@ snandam/ubuntulibrarianpuppet   v1.0                8e3efb31a5e8        16 secon
 docker run "snandam/ubuntulibrarianpuppet:v1.0" /usr/bin/ruby "--version"
 ```
 
-##### Exercise 6 : Run container as a daemon, view the output from container and stop it
+##### Exercise 6 : Run container as a daemon, view the output from container, stop, restart, pause and unpause
 ```shell
 docker run -d "snandam/ubuntulibrarianpuppet:v1.0" /bin/bash -c "while true; do /usr/bin/ruby --version;sleep 1;done"
--d Run container in background and print container ID
+#-d Run container in background and print container ID
 ```
 
 
+```
 # List the running containers
-```shell
+
 [root@localhost ubuntu_ruby]# docker ps
 CONTAINER ID        IMAGE                                COMMAND                CREATED             STATUS              PORTS               NAMES
 cf0ae16d41d4        snandam/ubuntulibrarianpuppet:v1.0   "/bin/bash -c 'while   4 minutes ago       Up 4 minutes                            modest_hypatia
@@ -370,7 +371,7 @@ docker export NGINX1 > nginx.tar
 ```
 
 
-# Note that inorder for this to work an image need to have the port exposed when building the image
+- Inorder for this to work an image need to have the port exposed when building the image
 
 ##### Notes :
 - Q: Why use -i and -d in the docker run command. If the docker is running a daemon and i is to run interactive why give at the same time?
