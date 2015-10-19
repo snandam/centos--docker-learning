@@ -3,6 +3,9 @@
 - Vagrant
 - Oracle Virtualbox
 
-#### What for?
+#### Steps
 
-- To setup a local vagrant machine to install and learn docker 
+- To setup a local vagrant machine to install and learn docker
+```sh
+vagrant up
+```
