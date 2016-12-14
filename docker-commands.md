@@ -199,9 +199,13 @@ docker attach a2bf0ec5f19b
 
 # From another shell on host machine find out the ipaddress of the container, hit nginx
 docker inspect a2bf0ec5f19b | grep IPAddress
+# You can use --format or -f to query for specific output
+docker inspect -f {{.NetworkSettings.IPAddress}} a2bf0ec5f19b
 curl http://172.17.0.55
 curl http://localhost:1000
 ```
+
+
 
 ##### Exercise 10 : Remove images from the local machine
 ```sh
@@ -256,8 +260,12 @@ gunmetalz/centos                nginx_autostart     53748122ca15        41 minut
 
 ##### Exercise 13 : Mount a volume or drive from local machine to docker container
 ```sh
-docker run -i -t -v /opt/docker:/opt centos:nginx_autostart /bin/bash
+docker run -i -t -v /opt/docker:/opt centos:nginx_autostart --name mycontainer /bin/bash
 -v Bind mount a volume. sourcemachine:targetcontainer
+
+docker inspect -f '{{ json .Mounts }}' mycontainer | jq
+
+
 # /opt/docker is directory in local machine and /opt mount is created in the container
 ```
 
@@ -369,13 +377,42 @@ docker history centos:nginx_autostart
 docker export NGINX1 > nginx.tar
 
 ```
-
-
 - Inorder for this to work an image need to have the port exposed when building the image
 
+
+
+#### Exercise 25 : Create a bridge network and add container to that network
+
+```sh
+docker network create -d bridge web-bridge
+docker network ls
+docker run -d --network=web-bridge -P --name web training/webapp python app.py
+docker network inspect web-bridge
+docker inspect -f {{.HostConfig.NetworkMode}} web
+docker inspect --format='{{json .NetworkSettings.Networks}}' web | jq
+```
+
+#### Exercise 26 : Run a container for db and join the container to the same network
+
+```sh
+docker run -d --name db training/postgres
+# By default all the containers connects to the default bridge network. These two containers can't talk to
+# each other unless they are in the same network
+docker network connect web-bridge db
+```
+
+#### Exercise 27: Create a docker volume of 25 MB and mount the volume to a container
+
+
+```sh
+docker volume create --opt o=size=20MB --name my-named-volume
+
+
+```
 ##### Notes :
 - Q: Why use -i and -d in the docker run command. If the docker is running a daemon and i is to run interactive why give at the same time?
 - A: By running with -i and /bin/bash you can attach to the container to it's shell prompt.
+
 
 
 ###### Docker file commands

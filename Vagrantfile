@@ -12,7 +12,7 @@ VAGRANTFILE_API_VERSION = "2"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
-  config.vm.box = "puppetlabs/centos-6.6-64-puppet-enterprise"
+  config.vm.box = "centos/7"
   #Vagrant box with puppet preinstalled
   #config.vm.box_url = "http://puppet-vagrant-boxes.puppetlabs.com/centos-65-x64-virtualbox-puppet.box"
 

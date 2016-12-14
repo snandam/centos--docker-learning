@@ -14,30 +14,34 @@
     #
     # Install epel
     #
-    - name: install the epel rpm from a remote repo for centos6
-      yum: name="{{ epel_rpm_centos6 }}" state=present
-      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
-
     - name: install the epel rpm from a remote repo for centos7
-      yum: name="{{ epel_rpm_centos7 }}" state=present
+      yum: name="epel-release" state=present
       when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
-    ##########
-    #
-    # Upgrade all packages
-    #
+    # ##########
+    # #
+    # # Upgrade all packages
+    # #
     - name: upgrade all packages
       yum: name=* state=latest
 
     ##########
     #
+    # Add docker repo
+    #
+    - name: Add docker repository
+      yum_repository:
+        name: dockerrepo
+        description: Docker Repository
+        baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+        enabled: yes
+        gpgcheck: no
+
+    ##########
+    #
     # Install docker
     #
-    - name: install docker-io for centos6
-      yum: name="docker-io" state=present
-      when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "6"
-
     - name: install docker for centos7
-      yum: name="docker" state=present
+      yum: name="docker-engine" state=present
       when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
     ##########
     #
@@ -54,3 +58,6 @@
     #
     - name: install your favorite tools
       yum: name="lynx" state=present
+
+    - name: install your favorite tools
+      yum: name="jq" state=present
